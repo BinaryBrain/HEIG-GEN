@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement />
+  <nodes>
+    <node x="966.6293402777778" y="371.5">PereNoel</node>
+    <node x="303.625" y="536.0">Flocon</node>
+    <node x="965.6293402777778" y="62.0">Globals</node>
+    <node x="699.1293402777778" y="610.0">VuePereNoel</node>
+    <node x="48.5" y="610.0">CoucheNeige</node>
+    <node x="0.0" y="350.0">VueCoucheNeige</node>
+    <node x="523.875" y="100.0">PanneauGraphique</node>
+    <node x="355.9" y="891.0">ChuteNeige</node>
+    <node x="480.5043402777778" y="0.0">SousVue</node>
+    <node x="374.125" y="350.0">VueFlocon</node>
+    <node x="875.4036458333333" y="901.5">CtrPereNoel</node>
+    <node x="476.275" y="1098.0">Noel</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="ChuteNeige" target="Flocon">
+      <point x="31.75" y="-78.5" />
+      <point x="514.65" y="866.0" />
+      <point x="572.125" y="866.0" />
+      <point x="89.5" y="152.5" />
+    </edge>
+    <edge source="CtrPereNoel" target="PereNoel">
+      <point x="28.375" y="-68.0" />
+      <point x="1017.2786458333333" y="866.0" />
+      <point x="1060.6293402777778" y="866.0" />
+      <point x="0.0" y="46.5" />
+    </edge>
+    <edge source="Noel" target="CtrPereNoel">
+      <point x="58.5" y="-57.0" />
+      <point x="612.775" y="1078.0" />
+      <point x="988.9036458333333" y="1078.0" />
+      <point x="0.0" y="68.0" />
+    </edge>
+    <edge source="VueFlocon" target="SousVue">
+      <point x="-54.25" y="-68.0" />
+      <point x="428.375" y="80.0" />
+      <point x="541.1043402777779" y="80.0" />
+      <point x="-40.39999999999998" y="25.0" />
+    </edge>
+    <edge source="VueFlocon" target="PanneauGraphique">
+      <point x="54.25" y="-68.0" />
+      <point x="536.875" y="330.0" />
+      <point x="620.4749999999999" y="330.0" />
+      <point x="-64.4" y="100.0" />
+    </edge>
+    <edge source="VuePereNoel" target="PanneauGraphique">
+      <point x="-117.0" y="-78.5" />
+      <point x="757.6293402777778" y="511.0" />
+      <point x="789.275" y="511.0" />
+      <point x="789.275" y="330.0" />
+      <point x="813.675" y="330.0" />
+      <point x="128.8" y="100.0" />
+    </edge>
+    <edge source="CtrPereNoel" target="VuePereNoel">
+      <point x="-28.375" y="-68.0" />
+      <point x="960.5286458333333" y="866.0" />
+      <point x="962.3793402777778" y="866.0" />
+      <point x="87.75" y="78.5" />
+    </edge>
+    <edge source="CoucheNeige" target="VueCoucheNeige">
+      <point x="58.5" y="-78.5" />
+      <point x="224.0" y="511.0" />
+      <point x="248.25" y="511.0" />
+      <point x="82.75" y="68.0" />
+    </edge>
+    <edge source="VueCoucheNeige" target="SousVue">
+      <point x="-82.75" y="-68.0" />
+      <point x="82.75" y="70.0" />
+      <point x="500.70434027777776" y="70.0" />
+      <point x="-80.80000000000001" y="25.0" />
+    </edge>
+    <edge source="VuePereNoel" target="SousVue">
+      <point x="0.0" y="-78.5" />
+      <point x="874.6293402777778" y="511.0" />
+      <point x="861.8793402777778" y="511.0" />
+      <point x="861.8793402777778" y="70.0" />
+      <point x="662.3043402777779" y="70.0" />
+      <point x="80.80000000000007" y="25.0" />
+    </edge>
+    <edge source="PanneauGraphique" target="SousVue">
+      <point x="80.5" y="-100.0" />
+      <point x="765.375" y="80.0" />
+      <point x="621.9043402777778" y="80.0" />
+      <point x="40.400000000000034" y="25.0" />
+    </edge>
+    <edge source="VueCoucheNeige" target="PanneauGraphique">
+      <point x="82.75" y="-68.0" />
+      <point x="248.25" y="320.0" />
+      <point x="556.0749999999999" y="320.0" />
+      <point x="-128.8" y="100.0" />
+    </edge>
+    <edge source="VuePereNoel" target="PereNoel">
+      <point x="117.0" y="-78.5" />
+      <point x="991.6293402777778" y="511.0" />
+      <point x="997.9626736111111" y="511.0" />
+      <point x="-62.666666666666686" y="46.5" />
+    </edge>
+    <edge source="Noel" target="PanneauGraphique">
+      <point x="19.5" y="-57.0" />
+      <point x="573.775" y="1068.0" />
+      <point x="688.6293402777778" y="1068.0" />
+      <point x="688.6293402777778" y="330.0" />
+      <point x="749.275" y="330.0" />
+      <point x="64.4" y="100.0" />
+    </edge>
+    <edge source="Noel" target="ChuteNeige">
+      <point x="-19.5" y="-57.0" />
+      <point x="534.775" y="1068.0" />
+      <point x="482.9" y="1068.0" />
+      <point x="0.0" y="78.5" />
+    </edge>
+    <edge source="ChuteNeige" target="CoucheNeige">
+      <point x="-95.25" y="-78.5" />
+      <point x="387.65" y="866.0" />
+      <point x="224.0" y="866.0" />
+      <point x="58.5" y="78.5" />
+    </edge>
+    <edge source="VueFlocon" target="Flocon">
+      <point x="72.33333333333326" y="68.0" />
+      <point x="554.9583333333333" y="511.0" />
+      <point x="601.9583333333333" y="511.0" />
+      <point x="119.33333333333331" y="-152.5" />
+    </edge>
+    <edge source="ChuteNeige" target="PanneauGraphique">
+      <point x="95.25" y="-78.5" />
+      <point x="578.15" y="866.0" />
+      <point x="672.125" y="866.0" />
+      <point x="672.125" y="320.0" />
+      <point x="684.875" y="320.0" />
+      <point x="0.0" y="100.0" />
+    </edge>
+    <edge source="Noel" target="CoucheNeige">
+      <point x="-58.5" y="-57.0" />
+      <point x="495.775" y="1078.0" />
+      <point x="107.0" y="1078.0" />
+      <point x="-58.5" y="78.5" />
+    </edge>
+    <edge source="Flocon" target="VueFlocon">
+      <point x="0.0" y="-152.5" />
+      <point x="0.0" y="68.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="672.5" y="300.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Constructors</Category>
+    <Category>Methods</Category>
+    <Category>Properties</Category>
+    <Category>Inner Classes</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

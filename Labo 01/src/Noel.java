@@ -41,9 +41,11 @@ class ChuteNeige implements Runnable {
     private Thread activite;
 
     private PanneauGraphique vueParente;
+    private CoucheNeige coucheNeige;
 
-    public ChuteNeige(PanneauGraphique vue) {
+    public ChuteNeige(PanneauGraphique vue, CoucheNeige coucheNeige) {
         this.vueParente = vue;
+        this.coucheNeige = coucheNeige;
 
         activite = new Thread(this);
         activite.start();
@@ -57,7 +59,7 @@ class ChuteNeige implements Runnable {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
             }
-            flocons[nbFlocons] = new Flocon(vueParente); // Creer un nouveau flocon
+            flocons[nbFlocons] = new Flocon(vueParente, coucheNeige); // Creer un nouveau flocon
             nbFlocons++;
         }
     }
@@ -78,7 +80,15 @@ class Flocon extends Observable implements Runnable {
     // Un generateur de nombres aleatoires
     public static Random rdGen = new Random();
 
-    public Flocon(PanneauGraphique vueParente) {
+    public int getLargeur() {
+        return largeur;
+    }
+
+    public int getHauteur() {
+        return hauteur;
+    }
+
+    public Flocon(PanneauGraphique vueParente, CoucheNeige coucheNeige) {
         vue = new VueFlocon(vueParente, this);
 
         x = rdGen.nextInt(Globals.PG_X);
@@ -86,6 +96,8 @@ class Flocon extends Observable implements Runnable {
         largeur = 1 + rdGen.nextInt(3);        // Generation nb aleat. entre 1 et 4
         hauteur = largeur + rdGen.nextInt(2);
         vitesse = hauteur;                   // Vitesse directement fonction de la taille
+
+        this.addObserver(coucheNeige);
 
         activite = new Thread(this);
         activite.start();
@@ -111,7 +123,12 @@ class Flocon extends Observable implements Runnable {
             y = 0;
         }
 
+        setChanged();
         notifyObservers();
+    }
+
+    public void reset() {
+        y = 0;
     }
 
     public void dessiner(Graphics g) {
@@ -119,6 +136,14 @@ class Flocon extends Observable implements Runnable {
         g.fillRect(x, y, largeur, hauteur);
         g.setColor(Color.lightGray);
         g.drawRect(x, y, largeur, hauteur);
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 }
 
@@ -141,7 +166,7 @@ class VueFlocon implements SousVue, Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, Object args) {
         dessiner(vueParente.getGraphics());
         vueParente.rafraichir(this);
     }
@@ -215,23 +240,26 @@ class VuePereNoel implements SousVue, Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
+    public void update(Observable observable, Object args) {
         dessiner(vueParente.getGraphics());
         vueParente.rafraichir(this);
     }
 }
 
-class CoucheNeige extends Observable implements Observer {
+class VueCoucheNeige implements Observer, SousVue {
     private PanneauGraphique vueParente;
     private int hauteur[] = new int[Globals.PG_X];
 
-    public CoucheNeige(PanneauGraphique parent) {
-        this.vueParente = parent;
+    public VueCoucheNeige(PanneauGraphique parent) {
+        vueParente = parent;
+        vueParente.ajouterSousVue(this);
     }
 
+    @Override
     public void dessiner(Graphics g) {
+        g.setColor(Color.white);
         for (int x = 0; x < Globals.PG_X; x++) {
-            for (int y = Globals.PG_Y; y < Globals.PG_Y - hauteur[x]; y--){
+            for (int y = Globals.PG_Y; y > Globals.PG_Y - hauteur[x]; y--) {
                 g.setColor(Color.white);
                 g.fillRect(x, y, 1, 1);
             }
@@ -239,8 +267,84 @@ class CoucheNeige extends Observable implements Observer {
     }
 
     @Override
-    public void update(Observable observable, Object o) {
-        // dessiner();
+    public void update(Observable observable, Object args) {
+        if (args instanceof int[]) {
+            hauteur = ((int[]) args);
+        }
+    }
+}
+
+class CoucheNeige extends Observable implements Observer {
+    private int hauteur[] = new int[Globals.PG_X];
+    private VueCoucheNeige vue;
+
+    public CoucheNeige(PanneauGraphique parent) {
+        vue = new VueCoucheNeige(parent);
+        addObserver(vue);
+    }
+
+    @Override
+    public void update(Observable observable, Object args) {
+        if (observable instanceof Flocon) {
+            Flocon flocon = ((Flocon) observable);
+            int x = flocon.getX();
+            int y = flocon.getY();
+
+            if (x >= 0 && x < Globals.PG_X) {
+                if (y + flocon.getHauteur() > Globals.PG_Y - hauteur[x]) {
+                    for (int i = 0; i < flocon.getLargeur(); i++) {
+                        if (x + i < Globals.PG_X) {
+                            if (hauteur[x + i] <= Globals.PG_X) {
+                                hauteur[x + i] += flocon.getHauteur();
+                                smooth();
+
+                                setChanged();
+                                notifyObservers(hauteur);
+                            }
+
+                            flocon.reset();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void smooth() {
+        boolean dirty = false;
+        do {
+            for (int x = 1; x < hauteur.length; x++) {
+                dirty = balance(x);
+            }
+        } while (dirty);
+    }
+
+    private boolean balance(int x) {
+        int padding = 3;
+        int diff = 1;
+        boolean dirty = false;
+
+        if (x >= 1 && x < Globals.PG_X - 1) {
+            if (hauteur[x] - hauteur[x - 1] > padding && hauteur[x] - hauteur[x + 1] > padding) {
+                hauteur[x] -= padding - diff;
+                hauteur[x - 1] += (padding - diff) / 2;
+                hauteur[x + 1] += (padding - diff) / 2;
+
+                dirty = true;
+            } else if (hauteur[x] - hauteur[x - 1] > padding) {
+                hauteur[x] -= padding - diff;
+                hauteur[x - 1] += padding - diff;
+
+                dirty = true;
+            } else if (hauteur[x] - hauteur[x + 1] > padding) {
+                hauteur[x] -= padding - diff;
+                hauteur[x + 1] += padding - diff;
+
+                dirty = true;
+            }
+        }
+
+        return dirty;
     }
 }
 
@@ -332,7 +436,7 @@ public class Noel extends JApplet {
 
 
         new CtrPereNoel(panneauGraphique);
-        new ChuteNeige(panneauGraphique);
+        new ChuteNeige(panneauGraphique, coucheNeige);
     }
 
     public void start() {
