@@ -66,7 +66,7 @@ class ChuteNeige implements Runnable {
 }
 
 // -----------------------------------------------------------------------------
-class Flocon extends Observable implements Runnable {
+class Flocon extends VuePereNoel implements Runnable {
     // Controleur, modele et vue pour un flocon
     private int x, y;            // Coordonnees courantes du flocon
     private int largeur;        // largeur du flocon (en pixels)
@@ -177,11 +177,10 @@ class CtrPereNoel implements Runnable {
     // Controleur du pere Noel
     private Thread activite;
     private PereNoel modele;
-    private VuePereNoel vue;
 
     public CtrPereNoel(PanneauGraphique parent) {
         modele = new PereNoel();
-        vue = new VuePereNoel(parent, modele);
+        new VuePereNoel(parent, modele);
 
         activite = new Thread(this);
         activite.start();
@@ -276,11 +275,9 @@ class VueCoucheNeige implements Observer, SousVue {
 
 class CoucheNeige extends Observable implements Observer {
     private int hauteur[] = new int[Globals.PG_X];
-    private VueCoucheNeige vue;
 
     public CoucheNeige(PanneauGraphique parent) {
-        vue = new VueCoucheNeige(parent);
-        addObserver(vue);
+        addObserver(new VueCoucheNeige(parent));
     }
 
     @Override
